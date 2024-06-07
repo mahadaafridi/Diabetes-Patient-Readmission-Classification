@@ -5,14 +5,6 @@ from sklearn.metrics import accuracy_score, classification_report, confusion_mat
 from ucimlrepo import fetch_ucirepo 
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
-<<<<<<< HEAD
-# num lab prodcedures
-# number_emergency
-# number_in_patient
-# number_medications
-
-=======
->>>>>>> bf00a46127d7ece9abd13f3b4c9dfddf20f34c67
 diabetes_130_us_hospitals_for_years_1999_2008 = fetch_ucirepo(id=296)
 
 X = diabetes_130_us_hospitals_for_years_1999_2008.data.features
