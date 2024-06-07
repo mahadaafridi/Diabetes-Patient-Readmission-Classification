@@ -1,9 +1,11 @@
 import pandas as pd
+import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 from ucimlrepo import fetch_ucirepo 
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
+import matplotlib.pyplot as plt
 diabetes_130_us_hospitals_for_years_1999_2008 = fetch_ucirepo(id=296)
 
 X = diabetes_130_us_hospitals_for_years_1999_2008.data.features
@@ -24,14 +26,53 @@ scaler = StandardScaler(with_mean=False)
 X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
 
-model = LogisticRegression(multi_class='multinomial', solver='lbfgs', max_iter=1000)
+def errors_for_train_sizes_lr(X_tr: np.array, y_tr: np.array, X_te: np.array, y_te: np.array, train_sizes: list[int]) -> tuple[list, list, list, list]:    
+    # append error rates to the following lists
+    tr_err_lr = [] # training error rates for Logistic Regression
+    te_err_lr = [] # testing error rates for Logistic Regression
+    accuracy_list = []
 
-model.fit(X_train, y_train)
+    for size in train_sizes:
+        X_tr_sample = X_tr[:size, :]
+        y_tr_sample = y_tr[:size]
+        X_te_sample = X_te[:size, :]
+        y_te_sample = y_te[:size]
+        model = LogisticRegression(multi_class='multinomial', solver='lbfgs', max_iter=1000)
 
-y_pred = model.predict(X_test)
+        model.fit(X_tr_sample, y_tr_sample)
 
-accuracy = accuracy_score(y_test, y_pred)
+        y_pred = model.predict(X_te_sample)
 
-print(accuracy)
-print(classification_report(y_test, y_pred))
-print(confusion_matrix(y_test, y_pred))
+        accuracy = accuracy_score(y_te_sample, y_pred)
+
+        tr_err = 1 - model.score(X_tr_sample, y_tr_sample)
+        te_err = 1 - model.score(X_te_sample , y_te_sample)
+        accuracy_list.append(accuracy)
+        tr_err_lr.append(tr_err)
+        te_err_lr.append(te_err)
+
+    return tr_err_lr, te_err_lr, accuracy_list 
+
+train_sizes = [50, 500, 2000, 5000, 10000, 20000, 40000] # Out of 71236 in X_train
+#make a silly little graph of it 
+tr_err_lr, te_err_lr, acc_list = errors_for_train_sizes_lr(X_train, y_train, X_test, y_test, train_sizes)
+
+print(tr_err_lr)
+print(te_err_lr)
+print(acc_list)
+
+plt.figure(figsize=(10, 6))
+
+plt.semilogx(train_sizes, tr_err_lr, label='training error', color='black')
+plt.semilogx(train_sizes, te_err_lr, label='testing error', color='purple')
+plt.semilogx(train_sizes, acc_list, label='accuracy', color='red')
+
+plt.xlabel('train size')
+plt.ylabel('accuracy or error rate')
+plt.title('trainig size vs error and accuracy')
+plt.legend()
+plt.grid(True)
+plt.show()
+# print(accuracy)
+# print(classification_report(y_test, y_pred))
+# print(confusion_matrix(y_test, y_pred))
