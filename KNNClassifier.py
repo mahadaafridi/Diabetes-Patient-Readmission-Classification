@@ -96,22 +96,48 @@ if __name__ == "__main__":
     # flatten y to pass into model
     y_train_flat = np.array(y_train).flatten()
 
-    k_values = [1, 5, 10, 50, 200, 500, 2000, 10000]
+    k_values = [1 ,5, 20, 100, 500, 2000]
+    weights = ["uniform", "distance"]
 
-    for k in k_values:
-        print("TESTING WITH k=" + str(k))
-        hyper_parameters = dict(
-            n_neighbors=k,
-            weights="uniform"
-        )
+    best_accuracy = 0
+    best_params = None
 
-        clf = KNeighborsClassifier(**hyper_parameters)
-        clf.fit(X_train, y_train_flat)
+    for weight in weights:
+        for k in k_values:
+            hyper_parameters = dict(
+                n_neighbors=k,
+                weights=weight
+            )
+            print("TESTING WITH" + str(hyper_parameters))
+            
+            clf = KNeighborsClassifier(**hyper_parameters)
+            clf.fit(X_train, y_train_flat)
+            
+            y_pred = clf.predict(X_test)
+            accuracy = accuracy_score(y_test, y_pred)
+            if accuracy > best_accuracy:
+                best_accuracy = accuracy
+                best_params = hyper_parameters
+            
+            print(accuracy)
+            print(hyper_parameters)
+            print()
 
-        y_pred = clf.predict(X_test)
+    print("\nBEST:")
+    print(best_accuracy)
+    print(best_params)
 
-        accuracy = accuracy_score(y_test, y_pred)
-        print(accuracy)
-        
-        print(classification_report(y_test, y_pred))
-        print(confusion_matrix(y_test, y_pred))
+
+    # hyper_parameters = dict(
+    #     n_neighbors=100,
+    #     weights="distance"
+    # )
+    # print("TESTING WITH" + str(hyper_parameters))
+
+    # clf = KNeighborsClassifier(**hyper_parameters)
+    # clf.fit(X_train, y_train_flat)
+
+    # y_pred = clf.predict(X_test)
+    # accuracy = accuracy_score(y_test, y_pred)
+    # print(classification_report(y_test, y_pred))
+    # print(confusion_matrix(y_test, y_pred))
