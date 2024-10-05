@@ -1,13 +1,5 @@
 # An Investigation of Classification Methods for the Diabetes 130-US Hospitals Dataset
-## Authors: Ryan Su, Mahad Afridi, Aidan Goeschel
 
-# CS 178 Final Project
-
-### Team Name: Team TEM
-- **Authors**: Mahad Afridi, Ryan Su, Aidan Goeschel
-- **Date**: June 10, 2024
-
----
 
 ## Dataset
 **Dataset**: [Diabetes 130-US Hospitals for Years 1999-2008](https://archive.ics.uci.edu/ml/datasets/diabetes+130-us+hospitals+for+years+1999-2008)
@@ -117,12 +109,6 @@ The KNN classifier performed best on smaller training sizes, while Random Forest
 
 All models struggled to predict the <30 days readmission label, suggesting bias in the dataset. Boosting techniques may improve results. Despite challenges, the Random Forest classifier demonstrated value, outperforming random classification.
 
----
-
-## Contributions
-- **Aidan**: Feed-forward neural network and visualizations.
-- **Ryan**: K-nearest neighbors classifier and experimental graphs.
-- **Mahad**: Random Forest, Logistic Classifier, and training size vs. performance graphs.
 
 ---
 
