@@ -110,9 +110,3 @@ The KNN classifier performed best on smaller training sizes, while Random Forest
 All models struggled to predict the <30 days readmission label, suggesting bias in the dataset. Boosting techniques may improve results. Despite challenges, the Random Forest classifier demonstrated value, outperforming random classification.
 
 
----
-
-## Works Cited
-- Strack, B. et al. "Impact of HbA1c Measurement on Hospital Readmission Rates". *BioMed Research International*, 2014.
-- Hu, Y. & Sokolova, M. "Convolutional Neural Networks in Multi-Class Classification of Medical Data". *Cornell University*, 2020.
-- Clore, J., & Cios, K. "Diabetes 130-US Hospitals for Years 1999-2008". *UCI Machine Learning Repository*, 2014.
